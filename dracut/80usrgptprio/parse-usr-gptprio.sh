@@ -3,8 +3,7 @@
 # ex: ts=8 sw=4 sts=4 et filetype=sh
 
 if [ "${usr%%:*}" = "gptprio" -a "${root%%:*}" = "gptprio" ]; then
-    fatal "Cannot use both root and usr gptprio"
-    exit 1
+    die "Cannot use both root and usr gptprio"
 fi
 
 if [ "${usr%%:*}" = "gptprio" ]; then

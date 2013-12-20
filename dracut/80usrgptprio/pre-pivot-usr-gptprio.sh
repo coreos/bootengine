@@ -160,7 +160,7 @@ do_exec_or_find_usr() {
             die "bootengine: failed to mount ${BOOTENGINE_USR_FALLBACK}"
     else
         # Well this is embarrassing...
-        die "bootengine: failed to find a usable root filesystem!"
+        die "bootengine: failed to find a usable usr filesystem!"
     fi
 }
 
