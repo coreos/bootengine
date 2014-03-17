@@ -14,4 +14,5 @@ install() {
     inst_hook cmdline 80 "$moddir/parse-usr-gptprio.sh"
     inst_hook pre-mount 99 "$moddir/usr-gptprio-lib.sh"
     inst_hook pre-pivot 95 "$moddir/pre-pivot-usr-gptprio.sh"
+    inst_multiple -o systemd-machine-id-setup
 }

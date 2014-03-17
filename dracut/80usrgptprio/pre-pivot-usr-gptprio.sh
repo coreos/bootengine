@@ -2,6 +2,9 @@
 # -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
 # ex: ts=8 sw=4 sts=4 et filetype=sh
 
+# /etc/machine-id after a new image is created:
+COREOS_BLANK_MACHINE_ID="42000000000000000000000000000042"
+
 # Flexible mount directory for testing
 [ -z ${BOOTENGINE_ROOT_DIR} ] && BOOTENGINE_ROOT_DIR=/sysroot
 BOOTENGINE_USR_DIR=${BOOTENGINE_ROOT_DIR}/usr
@@ -145,6 +148,27 @@ setup_usr_link() {
     bootengine_cmd ln -s "$target" "$path"
 }
 
+fix_etc_machine_id() {
+    # Check for "initial" /etc/machine-id or a blank /etc/machine-id file and
+    # create a "real" one instead.
+    MACHINE_ID_FILE="${BOOTENGINE_ROOT_DIR}/etc/machine-id"
+
+    WRITE_ID="0"
+    if [ ! -e "${MACHINE_ID_FILE}" ] ; then
+        WRITE_ID="1"
+        MACHINE_ID="not_found"
+    else
+        MACHINE_ID=$(cat "${MACHINE_ID_FILE}")
+        if [ "${MACHINE_ID}" == "${COREOS_BLANK_MACHINE_ID}" ] ; then
+            WRITE_ID="1"
+            rm -f "${MACHINE_ID_FILE}"
+        fi
+    fi
+    if [ "${WRITE_ID}" == "1" ] ; then
+        bootengine_cmd systemd-machine-id-setup --root=${BOOTENGINE_ROOT_DIR}
+    fi
+}
+
 setup_root_symlinks() {
     # TODO: there is no reason to risk the remount if everything is in place, add
     # this logic later.
@@ -156,6 +180,8 @@ setup_root_symlinks() {
     for link in ${BOOTENGINE_ROOT_DIRS}; do
         setup_usr_link "$link"
     done
+
+    fix_etc_machine_id
 
     bootengine_cmd mount -o remount,ro ${BOOTENGINE_ROOT_DIR} || die "Can't remount root ro"
 }
