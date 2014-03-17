@@ -156,7 +156,6 @@ fix_etc_machine_id() {
     WRITE_ID="0"
     if [ ! -e "${MACHINE_ID_FILE}" ] ; then
         WRITE_ID="1"
-        MACHINE_ID="not_found"
     else
         MACHINE_ID=$(cat "${MACHINE_ID_FILE}")
         if [ "${MACHINE_ID}" == "${COREOS_BLANK_MACHINE_ID}" ] ; then
