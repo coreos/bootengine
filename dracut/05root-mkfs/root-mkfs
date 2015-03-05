@@ -4,25 +4,9 @@
 
 set -e
 
-# Usage: cmdline_arg name default_value
-cmdline=( $(</proc/cmdline) )
-cmdline_arg() {
-    local name="$1" value="$2"
-    for arg in "${cmdline[@]}"; do
-        if [[ "${arg%%=*}" == "${name}" ]]; then
-            value="${arg#*=}"
-        fi
-    done
-    echo "${value}"
-}
-
-rootmkfs=$(cmdline_arg rootmkfs)
-rootmkfstype=$(cmdline_arg rootmkfstype btrfs)
-rootmkfsflags=$(cmdline_arg rootmkfsflags "-m single -l 32768 -n 32768 -L ROOT")
-
-if [[ ${rootmkfs} == "" ]]; then
-	exit 0
-fi
+rootmkfs=$1
+rootmkfstype=$2
+rootmkfsflags=$3
 
 if [[ ! -b ${rootmkfs} ]]; then
     echo "root device ${rootmkfs} is not found or is not a block device"
