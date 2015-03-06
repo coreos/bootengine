@@ -1,26 +1,38 @@
-#!/bin/bash
+#!/bin/bash -x
 # -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
 # ex: ts=8 sw=4 sts=4 et filetype=sh
 
-rootmkfs=$1
-rootmkfstype=$2
-rootmkfsflags="$3"
+root=$1
+rootmkfs=$2
+rootmkfstype=$3
+rootmkfsflags="$4"
 
+# check if the root exists
+if [[ `blkid ${root} > /dev/null` || `blkid -t ${root} > /dev/null` ]]; then
+    echo "root ${root} exists. rootmkfs will be ignored. continuing."
+    exit 0
+fi
+
+ls /dev/sd*
+
+# check if the selected device is a block device
 if [[ ! -b ${rootmkfs} ]]; then
     echo "root device ${rootmkfs} is not found or is not a block device"
     exit 1
 fi
 
+#check if its already formatted
 existingfs=`blkid ${rootmkfs} | sed -nr 's/^.*TYPE=\"(.*)\"$/\1/p'`
-
 if [[ ${existingfs} != "" ]]; then
     echo "root device ${rootmkfs} already formatted with ${existingfs}. continuing."
     exit 0
 fi
 
+# check that its a supported fs
 if [[ ${rootmkfstype} != "btrfs" && ${rootmkfstype} != "ext4" && ${rootmkfstype} != "xfs" ]]; then
     echo "unsupported rootmkfstype value $1" >&2
     exit 2
 fi
 
+# format the root
 mkfs.${rootmkfstype} ${rootmkfsflags} ${rootmkfs}
