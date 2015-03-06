@@ -47,5 +47,6 @@ Before=sysroot.mount
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/lib/systemd/root-mkfs ${rootmkfs} ${rootmkfstype} "${rootmkfsflags}"
+Environment="FLAGS=${rootmkfsflags}"
+ExecStart=/usr/lib/systemd/root-mkfs ${rootmkfs} ${rootmkfstype} ${FLAGS}
 EOF
