@@ -8,5 +8,5 @@ depends() {
 
 install() {
     dracut_install mkfs.btrfs mkfs.ext4 mkfs.xfs
-    inst_hook cmdline 05 "$moddir/root-mkfs.sh"
+    inst_hook initqueue/settled 05 "$moddir/root-mkfs.sh"
 }
