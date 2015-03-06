@@ -20,7 +20,7 @@ cmdline_arg() {
 
 add_requires() {
     local name="$1"
-    local requires_dir="${UNIT_DIR}/initrd-root-fs.target.requires"
+    local requires_dir="${UNIT_DIR}/basic.target.requires"
     mkdir -p "${requires_dir}"
     ln -sf "../${name}" "${requires_dir}/${name}"
 }
@@ -39,10 +39,6 @@ cat >"${UNIT_DIR}/root-mkfs.service" <<EOF
 
 [Unit]
 DefaultDependencies=no
-Before=initrd-root-fs.target
-Before=remount-sysroot.service
-Before=sysroot-usr.mount
-Before=sysroot.mount
 
 [Service]
 Type=oneshot
