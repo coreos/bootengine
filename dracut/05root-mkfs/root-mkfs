@@ -6,7 +6,7 @@ set -e
 
 rootmkfs=$1
 rootmkfstype=$2
-rootmkfsflags=$3
+rootmkfsflags="$3"
 
 if [[ ! -b ${rootmkfs} ]]; then
     echo "root device ${rootmkfs} is not found or is not a block device"
@@ -25,4 +25,4 @@ if [[ ${rootmkfstype} != "btrfs" && ${rootmkfstype} != "ext4" && ${rootmkfstype}
     exit 1
 fi
 
-mkfs.${rootmkfstype} ${rootmkfsflags} ${rootmkfs}
+mkfs.${rootmkfstype} "${rootmkfsflags}" ${rootmkfs}
