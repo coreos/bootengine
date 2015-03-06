@@ -25,4 +25,4 @@ if [[ ${rootmkfstype} != "btrfs" && ${rootmkfstype} != "ext4" && ${rootmkfstype}
     exit 1
 fi
 
-mkfs.${rootmkfstype} "${rootmkfsflags}" ${rootmkfs}
+mkfs.${rootmkfstype} ${rootmkfsflags} ${rootmkfs}
