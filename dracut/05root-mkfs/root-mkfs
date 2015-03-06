@@ -2,8 +2,6 @@
 # -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
 # ex: ts=8 sw=4 sts=4 et filetype=sh
 
-set -e
-
 rootmkfs=$1
 rootmkfstype=$2
 rootmkfsflags="$3"
@@ -22,7 +20,7 @@ fi
 
 if [[ ${rootmkfstype} != "btrfs" && ${rootmkfstype} != "ext4" && ${rootmkfstype} != "xfs" ]]; then
     echo "unsupported rootmkfstype value $1" >&2
-    exit 1
+    exit 2
 fi
 
 mkfs.${rootmkfstype} ${rootmkfsflags} ${rootmkfs}
