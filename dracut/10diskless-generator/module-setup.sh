@@ -8,8 +8,14 @@ depends() {
 }
 
 install() {
-    dracut_install mkfs.btrfs truncate
+    dracut_install mkfs.btrfs mkfs.ext4 truncate
     inst_simple "$moddir/diskless-btrfs" "$systemdutildir/diskless-btrfs"
+    inst_simple "$moddir/diskless-zram" "$systemdutildir/diskless-zram"
     inst_simple "$moddir/diskless-generator" \
         "$systemdutildir/system-generators/diskless-generator"
 }
+
+installkernel() {
+    hostonly='' instmods zram
+}
+
