@@ -31,8 +31,9 @@ DRACUT_ARGS=(
     --no-compress
     --omit i18n
     --omit lvm
-    --omit network
     --omit terminfo
+    # to drag in ca-certficates.crt for ignition
+    --add url-lib
     )
 
 SETUP_MOUNTS=
