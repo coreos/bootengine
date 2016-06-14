@@ -27,7 +27,6 @@ bad that happens will be less likely to hurt the host system. But no promises!
 DRACUT_ARGS=(
     --force
     --no-hostonly
-    --no-kernel
     --no-compress
     --omit i18n
     --omit lvm
