@@ -1,0 +1,7 @@
+[Match]
+KernelCommandLine=|coreos.oem.id=digitalocean
+KernelCommandLine=|coreos.oem.id=openstack
+
+[Network]
+DHCP=yes
+LinkLocalAddressing=yes
