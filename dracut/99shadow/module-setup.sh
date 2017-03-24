@@ -16,4 +16,11 @@ install() {
 
     cp -af "/usr/share/baselayout/gshadow" \
         "${initdir}/etc/gshadow"
+
+    # Include the default settings for useradd.
+    mkdir -p "${initdir}/etc/default"
+    cp -af "/usr/share/shadow/useradd" \
+        "${initdir}/etc/default/useradd"
+    cp -af "/usr/share/shadow/login.defs" \
+        "${initdir}/etc/login.defs"
 }
