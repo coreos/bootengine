@@ -32,7 +32,7 @@ DRACUT_ARGS=(
     --omit i18n
     --omit lvm
     --omit multipath
-    --omit network
+    --omit nfs
     --omit terminfo
     )
 
