@@ -1,0 +1,9 @@
+[Unit]
+Description="Trigger for coreos-cryptagent service"
+DefaultDependencies=false
+# Order before crypto volumes
+Before=initrd-setup-boot.service basic.target cryptsetup.target
+
+[Path]
+PathExists=/boot/etc/coreos-cryptagent/
+Unit=coreos-cryptagent.service

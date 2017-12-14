@@ -1,0 +1,16 @@
+SUBSYSTEM!="block", GOTO="coreos_cryptsetup_end"
+
+# Possible values for not running Ignition from 30ignition/ignition-generator.
+IMPORT{cmdline}="coreos.first_boot"
+ENV{coreos.first_boot}=="", GOTO="unlock_early_cryptsetup"
+ENV{coreos.first_boot}=="0", GOTO="unlock_early_cryptsetup"
+ENV{coreos.first_boot}=="no", GOTO="unlock_early_cryptsetup"
+ENV{coreos.first_boot}=="off", GOTO="unlock_early_cryptsetup"
+GOTO="coreos_cryptsetup_end"
+
+# Crypto devices to be unlocked in initramfs are detected via a specific GPT GUID (also known as `early_cryptsetup_volume`).
+LABEL="unlock_early_cryptsetup"
+IMPORT{builtin}="blkid"
+ENV{ID_PART_ENTRY_TYPE}=="ab997286-8ab3-400a-ad19-bae58743b7af", ACTION=="add|change", RUN+="/usr/bin/systemctl --no-block start coreos-cryptagent-attach@$devnode.service"
+
+LABEL="coreos_cryptsetup_end"

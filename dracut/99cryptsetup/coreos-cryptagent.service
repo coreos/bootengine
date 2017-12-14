@@ -1,0 +1,14 @@
+[Unit]
+Description="Agent for systemd-cryptsetup passphrases"
+DefaultDependencies=false
+Before=basic.target cryptsetup.target
+After=systemd-networkd.service systemd-resolved.service
+# Setup networking
+Wants=systemd-networkd.service systemd-resolved.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/coreos-cryptagent server
+Restart=always
+RestartSec=1s
+StartLimitBurst=0

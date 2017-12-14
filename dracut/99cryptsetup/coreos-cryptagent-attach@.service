@@ -1,0 +1,12 @@
+[Unit]
+Description=Unlock cryptsetup volumes in initramfs
+DefaultDependencies=false
+After=initrd-setup-boot.service coreos-cryptagent.service
+Before=local-fs.target
+Conflicts=initrd-switch-root.target umount.target
+Wants=initrd-setup-boot.service coreos-cryptagent.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/bin/coreos-cryptagent attach %I

@@ -1,0 +1,15 @@
+[Unit]
+Description="Mount initrd /boot"
+DefaultDependencies=false
+BindsTo=dev-disk-by\x2dlabel-EFI\x2dSYSTEM.device
+After=dev-disk-by\x2dlabel-EFI\x2dSYSTEM.device
+After=local-fs-pre.target
+Before=local-fs.target
+Conflicts=initrd-switch-root.target umount.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+# XXX(lucab): this works around a race, seemingly with udev, similar to https://github.com/coreos/bootengine/pull/107#issuecomment-284857423
+ExecStart=/bin/bash -c '/usr/bin/udevadm settle; /usr/bin/mount /dev/disk/by-label/EFI-SYSTEM /boot'
+ExecStop=/usr/sbin/retry-umount /boot
