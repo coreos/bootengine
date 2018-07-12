@@ -1,0 +1,38 @@
+[Unit]
+Description=Populate torcx store to satisfy profile
+DefaultDependencies=false
+
+# Requires ESP mounted at /sysroot/boot to check for first_boot
+Requires=sysroot-boot.service
+After=sysroot-boot.service
+
+# Requires files provisioning by ignition
+Requires=ignition-setup.service ignition-disks.service ignition-files.service
+After=ignition-setup.service ignition-disks.service ignition-files.service
+
+# Requires real rootfs at /sysroot to consume torcx config
+Requires=initrd-setup-root.service initrd-root-fs.target
+After=initrd-setup-root.service initrd-root-fs.target
+
+# Requires networking for downloading archives
+Wants=systemd-networkd.service
+After=systemd-networkd.service
+
+# Requires DNS resolution for remotes
+Wants=systemd-resolved.service
+After=systemd-resolved.service
+
+# Runs before initramfs provisioning is completed.
+Before=ignition-quench.service initrd-parse-etc.service
+
+[Install]
+RequiredBy=ignition-quench.service
+
+[Service]
+Type=oneshot
+Environment=TORCX_VERBOSE=info
+EnvironmentFile=-/sysroot/etc/environment
+EnvironmentFile=/sysroot/usr/lib/os-release
+BindReadOnlyPaths=/etc/resolv.conf
+RootDirectory=/sysroot
+ExecStart=/bin/bash -c "if [ -e /etc/torcx/next-profile ]; then /usr/lib/coreos/torcx profile populate -v=${TORCX_VERBOSE} -n ${VERSION_ID}; fi"
