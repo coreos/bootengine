@@ -1,6 +1,7 @@
 [Unit]
 Description=Populate torcx store to satisfy profile
 DefaultDependencies=false
+ConditionPathExists=/sysroot/etc/torcx/next-profile
 
 # Requires ESP mounted at /sysroot/boot to check for first_boot
 Requires=sysroot-boot.service
@@ -33,6 +34,8 @@ Type=oneshot
 Environment=TORCX_VERBOSE=info
 EnvironmentFile=-/sysroot/etc/environment
 EnvironmentFile=/sysroot/usr/lib/os-release
-BindReadOnlyPaths=/etc/resolv.conf
-RootDirectory=/sysroot
-ExecStart=/bin/bash -c "if [ -e /etc/torcx/next-profile ]; then /usr/lib/coreos/torcx profile populate -v=${TORCX_VERBOSE} -n ${VERSION_ID}; fi"
+ExecStartPre=/bin/bash -c ': >> /sysroot/etc/resolv.conf'
+ExecStartPre=/usr/bin/mount -o bind,ro /etc/resolv.conf /sysroot/etc/resolv.conf
+ExecStart=/usr/bin/chroot /sysroot /bin/bash -c "/usr/lib/coreos/torcx profile populate -v=${TORCX_VERBOSE} -n ${VERSION_ID}"
+ExecStartPost=/usr/bin/umount /sysroot/etc/resolv.conf
+ExecStartPost=/bin/bash -c '[ -s /sysroot/etc/resolv.conf ] || rm -f /sysroot/etc/resolv.conf'
