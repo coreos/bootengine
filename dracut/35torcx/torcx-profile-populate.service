@@ -3,10 +3,6 @@ Description=Populate torcx store to satisfy profile
 DefaultDependencies=false
 ConditionPathExists=/sysroot/etc/torcx/next-profile
 
-# Requires ESP mounted at /sysroot/boot to check for first_boot
-Requires=sysroot-boot.service
-After=sysroot-boot.service
-
 # Requires files provisioning by ignition
 Requires=ignition-setup.service ignition-disks.service ignition-files.service
 After=ignition-setup.service ignition-disks.service ignition-files.service
