@@ -49,5 +49,6 @@ install() {
         "$systemdsystemunitdir/coreos-static-network.service"
 
     inst_rules \
-        60-cdrom_id.rules
+        60-cdrom_id.rules \
+        66-azure-storage.rules
 }
