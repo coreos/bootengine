@@ -19,7 +19,11 @@ install() {
         mkfs.ext4 \
         mkfs.xfs \
         mkfs.vfat \
-        mkswap
+        mkswap \
+        nvme
+
+    inst_script "$udevdir/cloud_aws_ebs_nvme_id" \
+        "/usr/lib/udev/cloud_aws_ebs_nvme_id"
 
     inst_script "$moddir/ignition-setup.sh" \
         "/usr/sbin/ignition-setup"
@@ -50,5 +54,6 @@ install() {
 
     inst_rules \
         60-cdrom_id.rules \
-        66-azure-storage.rules
+        66-azure-storage.rules \
+        90-cloud-storage.rules
 }
