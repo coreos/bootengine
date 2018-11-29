@@ -1,0 +1,10 @@
+[Unit]
+Description=CoreOS Hetzner Cloud Hostname Agent
+DefaultDependencies=false
+Before=initrd.target
+After=systemd-networkd.service initrd-root-fs.target
+Wants=systemd-networkd.service initrd-root-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/coreos-metadata --cmdline --hostname=/sysroot/etc/hostname

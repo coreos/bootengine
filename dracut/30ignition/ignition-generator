@@ -97,6 +97,10 @@ if [[ $(cmdline_arg coreos.oem.id) == "digitalocean" ]]; then
     add_requires coreos-digitalocean-network.service
 fi
 
+if [[ $(cmdline_arg coreos.oem.id) == "hcloud" ]]; then
+    add_requires coreos-hcloud-hostname.service
+fi
+
 oem_id=pxe
 if [[ $(systemd-detect-virt || true) =~ ^(kvm|qemu)$ ]]; then
     oem_id=qemu
