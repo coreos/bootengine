@@ -49,8 +49,8 @@ install() {
     inst_simple "$moddir/coreos-digitalocean-network.service" \
         "$systemdsystemunitdir/coreos-digitalocean-network.service"
 
-    inst_simple "$moddir/coreos-hcloud-hostname.service" \
-        "$systemdsystemunitdir/coreos-hcloud-hostname.service"    
+    inst_simple "$moddir/coreos-static-hostname.service" \
+        "$systemdsystemunitdir/coreos-static-hostname.service"    
 
     inst_simple "$moddir/coreos-static-network.service" \
         "$systemdsystemunitdir/coreos-static-network.service"
