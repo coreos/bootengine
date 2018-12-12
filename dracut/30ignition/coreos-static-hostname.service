@@ -1,0 +1,13 @@
+[Unit]
+Description=CoreOS Static Hostname Agent
+DefaultDependencies=false
+Before=initrd.target
+After=systemd-networkd.service initrd-root-fs.target
+Wants=systemd-networkd.service initrd-root-fs.target
+
+# Ensure Ignition can overwrite /etc/hostname
+Before=ignition-files.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/coreos-metadata --cmdline --hostname=/sysroot/etc/hostname
