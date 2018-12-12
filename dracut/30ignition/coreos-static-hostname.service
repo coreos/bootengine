@@ -1,5 +1,5 @@
 [Unit]
-Description=CoreOS Hetzner Cloud Hostname Agent
+Description=CoreOS Static Hostname Agent
 DefaultDependencies=false
 Before=initrd.target
 After=systemd-networkd.service initrd-root-fs.target
